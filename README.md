@@ -1,2 +1,3 @@
 # swarm
-Spec-driven autonomous coding agents
+
+spec-driven autonomous coding agents
