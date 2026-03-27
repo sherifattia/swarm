@@ -9,17 +9,7 @@ Specs describe features of this repo. They are written and reviewed collaborativ
 - Each spec references its parent ADRs for architectural context
 - Specs are reviewed and approved before implementation begins
 
-## Status Values
+## Specs
 
-| Status | Meaning |
-|--------|---------|
-| `draft` | Work in progress, not ready for implementation |
-| `ready` | Written and approved, ready for a coding agent |
-| `in-progress` | A coding agent is actively implementing this spec |
-| `done` | Implemented and verified |
-| `blocked` | Waiting on a dependency (noted in the spec) |
-
-## Current Specs
-
-| Spec | Title | Status |
-|------|-------|--------|
+| Spec | Title |
+|------|-------|
