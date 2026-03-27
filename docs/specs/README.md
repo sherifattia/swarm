@@ -1,6 +1,8 @@
 # Specs
 
-Specs describe features of this repo. They are written and reviewed collaboratively by contributors, then handed to a coding agent for implementation. Each spec should be detailed enough for an agent to implement the feature in a single session.
+Specs are the refined input documents that get handed to a coding agent to produce a feature. They are interface-driven and detailed enough that any contributor can feed the same spec to a coding agent and get substantially similar output.
+
+A spec is a historical snapshot — the final version of everything that led up to the point where we could reliably stamp out a feature. Once committed, it serves as a record of what was given to the agent and why the feature exists in its current form.
 
 ## Conventions
 
