@@ -7,3 +7,4 @@ in place with updated status in YAML frontmatter.
 
 | ADR | Title | Status |
 |-----|-------|--------|
+| [0001](0001-agent-harness.md) | Use Open SWE as the agent harness for autonomous coding | proposed |
