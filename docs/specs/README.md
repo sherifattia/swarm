@@ -6,7 +6,6 @@ Specs describe features of this repo. They are written and reviewed collaborativ
 
 - One file per feature: `NNN-descriptive-title.md`
 - Specs are numbered sequentially: `001-*.md`, `002-*.md`, etc.
-- Each spec references its parent ADRs for architectural context
 - Specs are reviewed and approved before implementation begins
 
 ## Specs
