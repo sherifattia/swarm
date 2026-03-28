@@ -1,3 +1,3 @@
-# swarm
+# delegate
 
-spec-driven autonomous coding agents
+hand off specs, get back tested PRs
