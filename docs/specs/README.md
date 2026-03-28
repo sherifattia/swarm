@@ -8,15 +8,16 @@ A spec is a historical snapshot — the final version of everything that led up 
 
 - One file per feature: `NNN-descriptive-title.md`
 - Specs are numbered sequentially: `001-*.md`, `002-*.md`, etc.
+- Each spec is a standalone vertical slice — self-contained with all context an implementation agent needs
+- Specs follow the VDD canonical 5-section format when fully specified (see [ADR-0002](../decisions/0002-spec-methodology.md))
 - Specs are reviewed and approved before implementation begins
 
 ## Specs
 
 | Spec | Title | Status |
 |------|-------|--------|
-| [001](001-vsdd-slack-github-agent.md) | VSDD Slack/GitHub Agent (system-level) | draft |
-| [002](002-invocation-and-routing.md) | Invocation & Routing | placeholder |
-| [003](003-sdd-pipeline.md) | SDD Pipeline | placeholder |
-| [004](004-tdd-pipeline.md) | TDD Pipeline | placeholder |
-| [005](005-vdd-pipeline.md) | VDD Pipeline | placeholder |
-| [006](006-delivery.md) | Delivery | placeholder |
+| [001](001-invocation-and-routing.md) | Invocation & Routing | placeholder |
+| [002](002-spec-authoring-sdd.md) | Spec Authoring (SDD Phase) | placeholder |
+| [003](003-test-generation-tdd.md) | Test Generation & Red Gate (TDD Phase) | placeholder |
+| [004](004-phased-implementation-vdd.md) | Phased Implementation with Critics (VDD Phase) | placeholder |
+| [005](005-pr-creation-and-audit-trail.md) | PR Creation & Audit Trail | placeholder |
