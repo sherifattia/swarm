@@ -14,3 +14,4 @@ A spec is a historical snapshot — the final version of everything that led up 
 
 | Spec | Title |
 |------|-------|
+| [001](001-vsdd-slack-github-agent.md) | VSDD Slack/GitHub Agent |
