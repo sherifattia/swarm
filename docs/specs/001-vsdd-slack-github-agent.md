@@ -2,6 +2,18 @@
 
 A customized Open SWE agent that runs the VSDD pipeline (SDD → TDD → VDD) to turn feature requests — received via Slack thread or GitHub issue — into tested draft pull requests.
 
+> **This is the system-level spec.** It defines the end-to-end contract but is not directly TDD-ready — postconditions are system outcomes, not function-level behaviors. The sub-specs below decompose it into modules with clear input→output interfaces that TDD can mechanically derive tests from.
+
+### Sub-Specs
+
+| Spec | Module | Input → Output |
+|------|--------|----------------|
+| [002](002-invocation-and-routing.md) | Invocation & Routing | Raw webhook → validated `InvocationMessage` or error |
+| [003](003-sdd-pipeline.md) | SDD Pipeline | Feature description → approved canonical spec |
+| [004](004-tdd-pipeline.md) | TDD Pipeline | Approved spec → test suite + stubs + Red Gate result |
+| [005](005-vdd-pipeline.md) | VDD Pipeline | Plan + tests → implementation (all tests passing) |
+| [006](006-delivery.md) | Delivery | Implementation artifacts → draft PR + audit trail |
+
 ---
 
 ## 1. Behavioral Contract

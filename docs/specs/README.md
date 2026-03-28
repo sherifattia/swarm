@@ -12,6 +12,11 @@ A spec is a historical snapshot — the final version of everything that led up 
 
 ## Specs
 
-| Spec | Title |
-|------|-------|
-| [001](001-vsdd-slack-github-agent.md) | VSDD Slack/GitHub Agent |
+| Spec | Title | Status |
+|------|-------|--------|
+| [001](001-vsdd-slack-github-agent.md) | VSDD Slack/GitHub Agent (system-level) | draft |
+| [002](002-invocation-and-routing.md) | Invocation & Routing | placeholder |
+| [003](003-sdd-pipeline.md) | SDD Pipeline | placeholder |
+| [004](004-tdd-pipeline.md) | TDD Pipeline | placeholder |
+| [005](005-vdd-pipeline.md) | VDD Pipeline | placeholder |
+| [006](006-delivery.md) | Delivery | placeholder |
