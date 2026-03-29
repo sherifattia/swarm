@@ -8,9 +8,16 @@ A spec is a historical snapshot — the final version of everything that led up 
 
 - One file per feature: `NNN-descriptive-title.md`
 - Specs are numbered sequentially: `001-*.md`, `002-*.md`, etc.
+- Each spec is a standalone vertical slice — self-contained with all context an implementation agent needs
+- Specs follow the VDD canonical 5-section format when fully specified (see [ADR-0002](../decisions/0002-spec-methodology.md))
 - Specs are reviewed and approved before implementation begins
 
 ## Specs
 
-| Spec | Title |
-|------|-------|
+| Spec | Title | Status |
+|------|-------|--------|
+| [001](001-invocation-and-routing.md) | Invocation & Routing | placeholder |
+| [002](002-spec-authoring-sdd.md) | Spec Authoring (SDD Phase) | placeholder |
+| [003](003-test-generation-tdd.md) | Test Generation & Red Gate (TDD Phase) | placeholder |
+| [004](004-phased-implementation-vdd.md) | Phased Implementation with Critics (VDD Phase) | placeholder |
+| [005](005-pr-creation-and-audit-trail.md) | PR Creation & Audit Trail | placeholder |

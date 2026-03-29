@@ -8,7 +8,7 @@ decision-makers: ["sherifattia"]
 
 ## Context and Problem Statement
 
-Swarm is a GitHub App that takes feature specs and produces reviewed pull requests using autonomous coding agents. We need to choose an agent harness — the framework that receives a task, spins up an isolated environment, executes the coding work, and delivers a PR. This is the foundational architectural decision for the entire project.
+Delegate is a GitHub App that takes feature specs and produces reviewed pull requests using autonomous coding agents. We need to choose an agent harness — the framework that receives a task, spins up an isolated environment, executes the coding work, and delivers a PR. This is the foundational architectural decision for the entire project.
 
 Several companies have independently built production systems like this: [Stripe (Minions)](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents), [Ramp (Inspect)](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/), and [Coinbase (Cloudbot)](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/). Their architectures converged on the same patterns: isolated sandboxes, curated tools, Slack/GitHub-first invocation, rich context at startup, and subagent orchestration.
 
@@ -33,19 +33,19 @@ Several companies have independently built production systems like this: [Stripe
 
 ## Decision Outcome
 
-Chosen option: "Open SWE", because it is purpose-built for exactly the use case we are building — an autonomous coding agent system modeled after what Stripe, Ramp, and Coinbase independently converged on. It provides the full pipeline out of the box: GitHub webhook triggers, sandboxed execution, a planner/programmer agent architecture with human-in-the-loop plan approval, and automatic PR creation. It is open source (MIT), Python-based, and designed to be a customizable foundation rather than a finished product.
+Chosen option: "Open SWE", because it is purpose-built for exactly the use case we are building — an autonomous coding agent system modeled after what Stripe, Ramp, and Coinbase independently converged on. It provides the full pipeline out of the box: multi-surface invocation (Slack, Linear, GitHub webhooks), pluggable sandboxed execution, a Deep Agent with planning tools and subagent spawning, and automatic PR creation. It is open source (MIT), Python-based, and designed to be a customizable foundation rather than a finished product.
 
 If Open SWE proves insufficient, **OpenCode** is our fallback — it is the foundation Ramp used for their production system (Inspect), has the deepest GitHub integration, and its client/server architecture is well-suited for building orchestration on top of. The tradeoff is that we would need to build the full spec-to-PR pipeline ourselves.
 
 ### Consequences
 
 * Good, because it captures the architectural patterns that three major companies independently validated in production
-* Good, because it includes GitHub integration (issue label triggers, PR @-mention triggers, webhooks) out of the box
-* Good, because the three-graph architecture (Manager → Planner → Programmer) with human-in-the-loop plan approval aligns with our spec-driven workflow
+* Good, because it includes multi-surface invocation (Slack, Linear, GitHub @-mentions and webhooks) out of the box
+* Good, because the single Deep Agent architecture with `write_todos` planning, `task` subagent spawning, and middleware hooks provides flexible orchestration
 * Good, because it runs on LangGraph Platform which provides durable execution, streaming, checkpointing, and session management
 * Good, because Python aligns with the broader AI/ML ecosystem and LangChain tooling
 * Bad, because it is very new (released March 2026) and may have rough edges
-* Bad, because it currently only supports Daytona as a sandbox provider, creating a vendor dependency
+* Neutral, because the sandbox is pluggable (LangSmith, Daytona, Runloop, Modal, local, or custom) but each provider has its own tradeoffs
 * Bad, because the LangGraph Platform dependency adds infrastructure complexity
 * Bad, because the LangChain ecosystem moves fast and APIs may change
 
@@ -55,19 +55,19 @@ If Open SWE proves insufficient, **OpenCode** is our fallback — it is the foun
 
 [GitHub](https://github.com/langchain-ai/open-swe) · [Blog Post](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/) · Python · MIT · ~6.2K stars
 
-Open SWE is LangChain's open-source framework explicitly modeled after the internal coding agent systems at Stripe, Ramp, and Coinbase. It decomposes work into three LangGraph graphs: a **Manager** (orchestration/routing), a **Planner** (reads codebase, proposes a task plan, waits for approval), and a **Programmer** (executes the plan, runs tests, creates a PR). Each task runs in an isolated Daytona sandbox.
+Open SWE is LangChain's open-source framework explicitly modeled after the internal coding agent systems at Stripe, Ramp, and Coinbase. It is composed on the **Deep Agents** framework — a single agent with `write_todos` for planning, `task` for subagent spawning, file operations, shell access, and a middleware pipeline for deterministic behavior (message queue injection, automatic PR creation, error handling). Each task runs in an isolated sandbox (pluggable: LangSmith, Daytona, Runloop, Modal, local, or custom implementations via `SandboxBackendProtocol`).
 
-Invocation is via GitHub issue labels (`open-swe-auto`), PR @-mentions, a web dashboard (Next.js), a CLI, or the LangGraph SDK programmatically. Tools include a text editor, shell, Git operations (branch/commit/push/PR), and arbitrary MCP servers.
+Invocation is via **Slack** (@-mention in threads), **Linear** (`@openswe` on issues), or **GitHub** (`@openswe` in issue/PR comments). All surfaces produce deterministic thread IDs for follow-up routing. Tools include ~15 curated tools: file operations, shell, Git/PR creation, web fetching, and communication tools (Slack, Linear). See [`docs/open-swe-reference.md`](../open-swe-reference.md) for full details.
 
 * Good, because it is purpose-built for the "spec in, PR out" use case
-* Good, because the Planner/Programmer split maps directly to our spec-driven workflow
+* Good, because the `write_todos` planning + `task` subagent architecture maps to our spec-driven workflow
 * Good, because human-in-the-loop plan approval provides a safety gate before code changes
 * Good, because it supports multiple LLM providers (Anthropic default, plus OpenAI and Google)
 * Good, because MCP server extensibility allows adding tools without modifying core code
 * Good, because the LangGraph Platform provides durable execution, streaming, and checkpointing
 * Good, because the web dashboard provides task management and plan review UI
 * Bad, because it is very new (March 17, 2026) with limited production track record
-* Bad, because Daytona is the only supported sandbox provider (no Docker/Modal/E2B alternative)
+* Neutral, because the sandbox is pluggable (5 providers + custom), but each requires its own setup and credentials
 * Bad, because it depends on the LangGraph Platform infrastructure
 * Bad, because the monorepo couples the web app, agent, and CLI deployments
 
@@ -179,8 +179,8 @@ All three converged on: isolated sandboxes, curated toolsets, Slack-first invoca
 | **Language** | Python | TypeScript | Rust | TS/Python SDKs | TypeScript |
 | **License** | MIT | MIT | Apache 2.0 | Proprietary CLI | MIT |
 | **LLM providers** | 3+ | 75+ | 20+ | Claude only | 20+ |
-| **Sandbox** | Daytona | BYO | BYO + container-use | Built-in + Docker | BYO |
-| **GitHub triggers** | Labels, @-mentions, webhooks | Action, `/oc`, issue triage | CI/CD pattern | Action (`@claude`) | None |
+| **Sandbox** | Pluggable (LangSmith, Modal, Daytona, Runloop, custom) | BYO | BYO + container-use | Built-in + Docker | BYO |
+| **Invocation** | Slack, Linear, GitHub @-mentions | Action, `/oc`, issue triage | CI/CD pattern | Action (`@claude`) | None |
 | **Spec → PR pipeline** | Built-in | Build yourself | Build yourself | Build yourself | Build yourself |
-| **Subagents** | Planner/Programmer | Multi-agent config | Sub-recipes (parallel) | Task tool | Via extensions |
+| **Subagents** | `task` tool (Deep Agents) + middleware | Multi-agent config | Sub-recipes (parallel) | Task tool | Via extensions |
 | **Production precedent** | Codifies Stripe/Ramp/Coinbase | Ramp (Inspect) | Stripe (Minions) | GitHub Action ecosystem | OpenClaw |
