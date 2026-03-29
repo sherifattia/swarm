@@ -8,7 +8,7 @@ decision-makers: ["sherifattia"]
 
 ## Context and Problem Statement
 
-Swarm is a GitHub App that takes feature specs and produces reviewed pull requests using autonomous coding agents. We need to choose an agent harness — the framework that receives a task, spins up an isolated environment, executes the coding work, and delivers a PR. This is the foundational architectural decision for the entire project.
+Delegate is a GitHub App that takes feature specs and produces reviewed pull requests using autonomous coding agents. We need to choose an agent harness — the framework that receives a task, spins up an isolated environment, executes the coding work, and delivers a PR. This is the foundational architectural decision for the entire project.
 
 Several companies have independently built production systems like this: [Stripe (Minions)](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents), [Ramp (Inspect)](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/), and [Coinbase (Cloudbot)](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/). Their architectures converged on the same patterns: isolated sandboxes, curated tools, Slack/GitHub-first invocation, rich context at startup, and subagent orchestration.
 
